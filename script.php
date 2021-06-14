@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 $nome = $_POST['nome'];
 $idade= $_POST['idade'];
 $categorias = [];
@@ -8,25 +10,25 @@ $categorias[] = 'Adolecente';
 $categorias[] = 'Adulto';
 
 if(empty($nome)){
-    echo 'O nome não pode ser vazio.';
-    return;
+     $_SESSION['mensagem_de_erro'] = 'O nome não pode ser vazio. Por favor digite seu nome.';
+     header ('location: index.php');
 }
-if(strlen($nome) < 3){
-    echo 'O nome deve conter mais de 3 caracteres.';
-    return;
+else if(strlen($nome) < 3){
+     $_SESSION['mensagem_de_erro'] = 'O nome deve conter mais de 3 caracteres.';
+     header ('location: index.php');
 }
-if(strlen($nome) > 40){
-    echo 'O nome é muito extenso';
-    return;
+else if(strlen($nome) > 40){
+     $_SESSION['mensagem_de_erro'] = 'O nome é muito extenso';
+     header ('location: index.php');
 }
 
-if(!is_numeric($idade)){
-    echo 'Informe um numero para idade.';
-    return;
+else if(!is_numeric($idade)){
+     $_SESSION['mensagem_de_erro'] = 'Informe um numero para idade.';
+     header ('location: index.php');
 }
-if(strlen($idade) > 3){
-    echo 'A idade de conter no maximo 3 digitos númericos.';
-    return;
+else if(strlen($idade) > 3){
+     $_SESSION['mensagem_de_erro'] = 'A idade de conter no maximo 3 digitos númericos.';
+     header ('location: index.php');
 }
 
 // var_dump($nome);
@@ -36,23 +38,31 @@ if(strlen($idade) > 3){
 // print_r($categorias);
 
 if($idade < 6){
-    echo 'Você ainda não tem idade minima para competir.';
+    $_SESSION['mensagem_de_sucesso'] =  'Você ainda não tem idade minima para competir.';
+    header ('location:index.php');
+    return;
 } else if($idade >=6 && $idade <=12){
     for ($i=0; $i < count($categorias); $i++) { 
-        if ($i == 'Infantil') {
-            echo 'O competidor '.$nome.' está na categoria infantil.';
+        if ($categorias[$i] == 'Infantil') {
+            $_SESSION['mensagem_de_sucesso'] =  'O competidor '.$nome.' está na categoria '.$categorias[$i];
+            header ('location:index.php');
+            return;
         }
     }
 } else if($idade >=13 && $idade <=18){
     for ($i=0; $i < count($categorias); $i++) { 
-        if ($i == 'Adolecente') {
-            echo 'O competidor '.$nome.' está na categoria adolecente.';
+        if ($categorias[$i] == 'Adolecente') {
+            $_SESSION['mensagem_de_sucesso'] =  'O competidor '.$nome.' está na categoria '.$categorias[$i];
+            header ('location:index.php');
+            return;
         }
     }
 } else {
     for ($i=0; $i < count($categorias); $i++) { 
-        if ($i == 'Adulto') {
-            echo 'O competidor '.$nome.' está na categoria adulta.';
+        if ($categorias[$i] == 'Adulto') {
+            $_SESSION['mensagem_de_sucesso'] =  'O competidor '.$nome.' está na categoria '.$categorias[$i];
+            header ('location:index.php');
+            return;
         }
     }
 }
